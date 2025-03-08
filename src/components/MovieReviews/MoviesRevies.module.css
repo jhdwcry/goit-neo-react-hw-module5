@@ -1,0 +1,4 @@
+.reviewsList {
+  display: flex;
+  flex-wrap: wrap;
+}

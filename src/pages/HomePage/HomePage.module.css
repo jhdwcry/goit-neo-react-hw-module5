@@ -1,0 +1,14 @@
+.homePageList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.homePageListItem {
+  color: white;
+}
+
+.homePageListItem:hover {
+  color: rgb(135, 149, 255);
+}
