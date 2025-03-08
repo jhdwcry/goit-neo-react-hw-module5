@@ -20,8 +20,6 @@
 
 ul {
   list-style: none;
-  display: flex;
-  flex-wrap: wrap;
 }
 
 @keyframes logo-spin {
