@@ -1,41 +1,37 @@
-import { useEffect, useState } from "react";
-import { useParams, Link, Outlet, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useEffect, useRef, useState } from "react"
+import { useParams, Link, useLocation, Outlet } from "react-router-dom"
+import { fetchMoviesById } from "../../api/api"
+const defaultImg =
+    "https://dl-media.viber.com/10/share/2/long/vibes/icon/image/0x0/95e0/5688fdffb84ff8bed4240bcf3ec5ac81ce591d9fa9558a3a968c630eaba195e0.jpg>";
 
-const MovieDetailsPage = () => {
-  const { movieId } = useParams();
-  const [movie, setMovie] = useState(null);
-  const navigate = useNavigate();
+function MovieDetailsPage() {
+    const { movieId } = useParams()
+    const [movie, setMovie] = useState(null);
+    useEffect(() => { fetchMoviesById(movieId).then(data => setMovie(data)) }, [movieId]);
 
-  useEffect(() => {
-    const fetchMovieDetails = async () => {
-      const url = `https://api.themoviedb.org/3/movie/${movieId}`;
-      const options = {
-        headers: { Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2NzQwMTViZmE2NzExNjYwNzI2MGQyN2Q2Njk3N2ZiYSIsIm5iZiI6MTc0MTQ0MzM3OS4yNDYsInN1YiI6IjY3Y2M1MTMzOWVmMGFjZGI4YjViYWJiZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4WnoEbeHOLrFOyxEHUWdB9Rh5sL6Z6isqRq_qDPzALs" },
-      };
-      try {
-        const response = await axios.get(url, options);
-        setMovie(response.data);
-      } catch (error) {
-        console.error("Error fetching movie details:", error);
-      }
-    };
-    fetchMovieDetails();
-  }, [movieId]);
+    const location = useLocation();
+    const goBackLink = useRef(location.state ?? '/')
 
-  if (!movie) return <p>Loading...</p>;
+    return (
+        <div>
+            <Link to={goBackLink.current}>Go back</Link>
+            {movie && <>
+                <img
+                    src={
+                        movie.poster_path
+                        ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+                        : defaultImg
+                    }
+                    width={250}
+                    alt="poster"
+                />
+                <h2>{movie.title}</h2>
+            </>}
+            <Link to='cast'>Cast</Link>
+            <Link to='reviews'>Reviews</Link>
+            <Outlet/>
+        </div>
+    )
+}
 
-  return (
-    <div>
-      <button onClick={() => navigate(-1)}>Go back</button>
-      <h1>{movie.title}</h1>
-      <p>{movie.overview}</p>
-      <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
-      <h2>Additional Info</h2>
-      <Link to="cast">Cast</Link> | <Link to="reviews">Reviews</Link>
-      <Outlet />
-    </div>
-  );
-};
-
-export default MovieDetailsPage;
+export default MovieDetailsPage
