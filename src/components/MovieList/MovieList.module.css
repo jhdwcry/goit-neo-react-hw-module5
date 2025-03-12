@@ -1,0 +1,7 @@
+.movieListItem {
+  color: aliceblue;
+}
+
+.movieListItem:hover {
+  color: blueviolets;
+}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchMovieCast } from "../../api/api"; // Імпортуємо функцію запиту
+import { fetchMovieCast } from "../../api/api";
+import css from './MovieCast.module.css'
 
 const MovieCast = () => {
   const { movieId } = useParams();
@@ -21,8 +22,8 @@ const MovieCast = () => {
 
   return (
     <div>
-      <h2>Cast</h2>
-      <ul>
+      <h2 className={css.movieCastTitle}>Cast</h2>
+      <ul className={css.movieCastList}>
         {cast.map(({ id, name, profile_path }) => (
           <li key={id}>
             <img src={`https://image.tmdb.org/t/p/w200${profile_path}`} alt={name} />

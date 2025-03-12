@@ -1,4 +1,10 @@
+.movieCastTitle {
+  color: white;
+}
+
 .movieCastList {
   display: flex;
   flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
 }
